@@ -1,2 +1,2 @@
 rootProject.name = "CustomBiomeApi"
-include("lib", "v1_19_4")
+include("lib", "api", "v1_19_4")

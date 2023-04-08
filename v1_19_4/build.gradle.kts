@@ -1,12 +1,9 @@
 plugins {
     `java-library`
-    id("org.jetbrains.kotlin.jvm")
-}
-
-repositories {
-    mavenCentral()
+    id("io.papermc.paperweight.userdev")
 }
 
 dependencies {
-    implementation("org.jetbrains.kotlin:kotlin-stdlib")
+    paperweight.paperDevBundle("1.19.4-R0.1-SNAPSHOT")
+    api(project(":api"))
 }
