@@ -1,2 +1,5 @@
 rootProject.name = "CustomBiomeApi"
-include("lib", "api", "v1_19_4")
+
+val versions: String by settings
+
+include("lib", "api", *versions.split(',').map { "v" + it.replace('.', '_') }.toTypedArray())
