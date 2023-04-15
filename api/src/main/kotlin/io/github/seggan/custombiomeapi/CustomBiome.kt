@@ -4,7 +4,7 @@ import org.bukkit.Color
 import org.bukkit.NamespacedKey
 import org.bukkit.block.Biome
 
-class CustomBiome(
+data class CustomBiome(
     val key: NamespacedKey,
     val baseBiome: Biome,
     val isRainy: Boolean,
