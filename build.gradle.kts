@@ -12,6 +12,9 @@ plugins {
     id("io.papermc.paperweight.userdev") version "1.5.4" apply false
 }
 
+version = "1.0.0"
+group = "io.github.seggan"
+
 val versions by extra((properties["versions"] as String).split(','))
 val versionProjects by extra(versions.map { ":v" + it.replace('.', '_') })
 
