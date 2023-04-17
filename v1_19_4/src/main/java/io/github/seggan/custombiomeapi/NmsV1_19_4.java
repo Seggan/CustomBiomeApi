@@ -56,6 +56,9 @@ class NmsV1_19_4 implements NmsAccessor {
         effects.grassColorModifier(BiomeSpecialEffects.GrassColorModifier.NONE);
         builder.specialEffects(effects.build());
 
+        builder.temperature(0.5f);
+        builder.downfall(0.5f);
+
         ResourceKey<Biome> key = ResourceKey.create(
             Registries.BIOME,
             nsKeyToResourceLocation(biome.key())
