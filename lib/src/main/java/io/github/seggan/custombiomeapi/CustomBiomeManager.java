@@ -17,12 +17,19 @@ import java.util.LinkedHashSet;
 import java.util.Map;
 import java.util.Set;
 
+/**
+ * Manages custom biomes
+ */
 public final class CustomBiomeManager {
 
     private final NmsAccessor accessor;
 
     private final Map<World, Set<CustomBiome>> biomes = new HashMap<>();
 
+    /**
+     * Creates a new CustomBiomeManager with the provided plugin
+     * @param plugin the plugin creating this manager
+     */
     public CustomBiomeManager(@NotNull JavaPlugin plugin) {
         //noinspection SwitchStatementWithTooFewBranches
         this.accessor = switch (Bukkit.getMinecraftVersion()) {
@@ -46,10 +53,20 @@ public final class CustomBiomeManager {
         }, plugin);
     }
 
+    /**
+     * Registers a new biome with the internal biome registry
+     * @param biome the biome to register
+     */
     public void registerBiome(@NotNull CustomBiome biome) {
         accessor.registerBiome(biome);
     }
 
+    /**
+     * Adds a biome to the list of biomes to be applied to a world. All instances of the {@link CustomBiome#baseBiome()}
+     * will be replaced with the provided biome
+     * @param world the world to add the biome to
+     * @param biome the biome to add
+     */
     public void addBiomeToWorld(@NotNull World world, @NotNull CustomBiome biome) {
         biomes.computeIfAbsent(world, w -> new LinkedHashSet<>()).add(biome);
     }
