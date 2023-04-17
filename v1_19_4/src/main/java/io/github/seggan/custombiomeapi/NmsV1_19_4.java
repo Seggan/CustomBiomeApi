@@ -39,9 +39,6 @@ class NmsV1_19_4 implements NmsAccessor {
     private final Map<CustomBiome, ResourceKey<Biome>> customBiomeToKey = Maps.newHashMap();
     private final MappedRegistry<Biome> biomeRegistry = (MappedRegistry<Biome>) ((CraftServer) Bukkit.getServer()).getServer().registryAccess().registryOrThrow(Registries.BIOME);
 
-    NmsV1_19_4() {
-    }
-
     public void registerBiome(@NotNull CustomBiome biome) {
         Biome.BiomeBuilder builder = new Biome.BiomeBuilder();
         builder.generationSettings(BiomeGenerationSettings.EMPTY);
@@ -50,18 +47,18 @@ class NmsV1_19_4 implements NmsAccessor {
         builder.hasPrecipitation(biome.isRainy());
 
         BiomeSpecialEffects.Builder effects = new BiomeSpecialEffects.Builder();
-        effects.fogColor(biome.getFogColor().asRGB());
-        effects.waterColor(biome.getWaterColor().asRGB());
-        effects.waterFogColor(biome.getWaterFogColor().asRGB());
-        effects.skyColor(biome.getSkyColor().asRGB());
-        effects.grassColorOverride(biome.getGrassColor().asRGB());
-        effects.foliageColorOverride(biome.getFoliageColor().asRGB());
+        effects.fogColor(biome.fogColor().asRGB());
+        effects.waterColor(biome.waterColor().asRGB());
+        effects.waterFogColor(biome.waterFogColor().asRGB());
+        effects.skyColor(biome.skyColor().asRGB());
+        effects.grassColorOverride(biome.grassColor().asRGB());
+        effects.foliageColorOverride(biome.foliageColor().asRGB());
         effects.grassColorModifier(BiomeSpecialEffects.GrassColorModifier.NONE);
         builder.specialEffects(effects.build());
 
         ResourceKey<Biome> key = ResourceKey.create(
             Registries.BIOME,
-            nsKeyToResourceLocation(biome.getKey())
+            nsKeyToResourceLocation(biome.key())
         );
         customBiomeToKey.put(biome, key);
 
@@ -80,7 +77,7 @@ class NmsV1_19_4 implements NmsAccessor {
                 for (int z = 0; z < 16; z++) {
                     Holder<Biome> biomeHolder = nmsChunk.getNoiseBiome(x, y, z);
                     for (CustomBiome customBiome : biomes) {
-                        if (biomeHolder.is(biomeToKey.get(customBiome.getBaseBiome()))) {
+                        if (biomeHolder.is(biomeToKey.get(customBiome.baseBiome()))) {
                             nmsChunk.setBiome(x, y, z, biomeRegistry.getHolderOrThrow(customBiomeToKey.get(customBiome)));
                             break;
                         }
