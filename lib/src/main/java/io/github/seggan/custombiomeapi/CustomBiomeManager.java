@@ -1,5 +1,6 @@
 package io.github.seggan.custombiomeapi;
 
+import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.bukkit.Bukkit;
 import org.bukkit.Chunk;
 import org.bukkit.NamespacedKey;
@@ -13,12 +14,13 @@ import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.LinkedHashSet;
 import java.util.Map;
 import java.util.Set;
 
 /**
- * Manages custom biomes
+ * Manages {@link CustomBiome}s
  */
 public final class CustomBiomeManager {
 
@@ -26,9 +28,11 @@ public final class CustomBiomeManager {
 
     private final Map<World, Set<CustomBiome>> biomes = new HashMap<>();
 
+    private final Set<CustomBiome> registeredBiomes = new HashSet<>();
+
     /**
-     * Creates a new CustomBiomeManager with the provided plugin
-     * @param plugin the plugin creating this manager
+     * Creates a new {@code CustomBiomeManager} with the provided {@link JavaPlugin}
+     * @param plugin the {@code JavaPlugin} creating this manager
      */
     public CustomBiomeManager(@NotNull JavaPlugin plugin) {
         //noinspection SwitchStatementWithTooFewBranches
@@ -54,18 +58,28 @@ public final class CustomBiomeManager {
     }
 
     /**
-     * Registers a new biome with the internal biome registry
-     * @param biome the biome to register
+     * Registers a new {@link CustomBiome} with the internal biome registry
+     * @param biome the {@code CustomBiome} to register
      */
     public void registerBiome(@NotNull CustomBiome biome) {
         accessor.registerBiome(biome);
+        registeredBiomes.add(biome);
     }
 
     /**
-     * Adds a biome to the list of biomes to be applied to a world. All instances of the {@link CustomBiome#baseBiome()}
-     * will be replaced with the provided biome
-     * @param world the world to add the biome to
-     * @param biome the biome to add
+     * Checks if the provided {@link CustomBiome} is registered
+     * @param biome the {@code CustomBiome} to check
+     * @return whether the {@code CustomBiome} is registered or not
+     */
+    public boolean isBiomeRegistered(@NotNull CustomBiome biome) {
+        return registeredBiomes.contains(biome);
+    }
+
+    /**
+     * Adds a {@link CustomBiome} to the list of biomes to be applied to a {@link World}. All instances of
+     * the {@link CustomBiome#baseBiome()} in the {@code World} will be replaced with the provided {@code CustomBiome}
+     * @param world the {@code World} to add the {@code CustomBiome} to
+     * @param biome the {@code CustomBiome} to add
      */
     public void addBiomeToWorld(@NotNull World world, @NotNull CustomBiome biome) {
         biomes.computeIfAbsent(world, w -> new LinkedHashSet<>()).add(biome);

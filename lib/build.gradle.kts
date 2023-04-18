@@ -12,17 +12,23 @@ dependencies {
     api(project(":api"))
 }
 
+tasks.register<Jar>("javadocJar") {
+    archiveClassifier.set("javadoc")
+    from(tasks.javadoc)
+}
+
+tasks.shadowJar {
+    archiveClassifier.set("")
+}
+
 publishing {
     publications {
         create<MavenPublication>("maven") {
             artifact(tasks.shadowJar)
+            artifact(tasks.named("javadocJar"))
             groupId = rootProject.group.toString()
             artifactId = rootProject.name
             version = rootProject.version.toString()
         }
     }
-}
-
-tasks.shadowJar {
-    archiveClassifier.set("")
 }
