@@ -26,7 +26,7 @@ public final class CustomBiomeManager {
 
     private final NmsAccessor accessor;
 
-    private final Map<World, Set<CustomBiome>> biomes = new HashMap<>();
+    private final Map<NamespacedKey, Set<CustomBiome>> biomes = new HashMap<>();
 
     private final Set<CustomBiome> registeredBiomes = new HashSet<>();
 
@@ -49,7 +49,7 @@ public final class CustomBiomeManager {
                 PersistentDataContainer container = chunk.getPersistentDataContainer();
                 if (container.has(replacedKey, PersistentDataType.BYTE)) return;
                 container.set(replacedKey, PersistentDataType.BYTE, (byte) 1);
-                Set<CustomBiome> biomeList = biomes.get(chunk.getWorld());
+                Set<CustomBiome> biomeList = biomes.get(chunk.getWorld().getKey());
                 if (biomeList != null) {
                     accessor.replaceBiomes(chunk, biomeList);
                 }
@@ -82,6 +82,6 @@ public final class CustomBiomeManager {
      * @param biome the {@code CustomBiome} to add
      */
     public void addBiomeToWorld(@NotNull World world, @NotNull CustomBiome biome) {
-        biomes.computeIfAbsent(world, w -> new LinkedHashSet<>()).add(biome);
+        biomes.computeIfAbsent(world.getKey(), w -> new LinkedHashSet<>()).add(biome);
     }
 }
